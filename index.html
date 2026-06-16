@@ -56,12 +56,18 @@ main { max-width:1180px; margin:10px auto; padding:0 14px 40px; }
 .option input:checked + label { border-color:var(--red); background:#fee2e2; color:#7f1d1d; font-weight:800; }
 .option input[data-correct="true"]:checked + label { border-color:var(--green); background:#d1fae5; color:#064e3b; }
 .question:has(input:checked) .option input[data-correct="true"] + label { border-color:var(--green); background:#d1fae5; color:#064e3b; font-weight:800; }
-.explain-toggle { margin-top:12px; border:0; border-radius:7px; background:#e2e8f0; color:#334155; padding:7px 10px; font-weight:900; cursor:pointer; touch-action:manipulation; }
-.question.wrong .explain-toggle { background:#fed7aa; color:#9a3412; }
+.explain-toggle { display:inline-flex; align-items:center; justify-content:center; margin-top:10px; border:1px solid #cbd5e1; border-radius:8px; background:linear-gradient(180deg,#ffffff,#f1f5f9); color:#475569; width:34px; height:30px; padding:0; cursor:pointer; touch-action:manipulation; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 5px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.06); transition:transform .18s cubic-bezier(.34,1.56,.64,1), background .18s ease, box-shadow .18s ease, border-color .18s ease; -webkit-tap-highlight-color:transparent; }
+.explain-toggle:hover { background:linear-gradient(180deg,#fff7ed,#ffedd5); border-color:#fdba74; color:#9a3412; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 4px 10px rgba(249,115,22,.18), 0 2px 4px rgba(15,23,42,.08); transform:translateY(-1px); }
+.explain-toggle:active { transform:translateY(1px) scale(.96); box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 1px 3px rgba(15,23,42,.1); }
+.explain-toggle .chev { position:relative; width:10px; height:10px; display:inline-block; transition:transform .25s cubic-bezier(.34,1.56,.64,1); }
+.explain-toggle .chev::before { content:""; position:absolute; left:1px; top:1px; width:7px; height:7px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); border-radius:1px; transition:border-color .18s ease; }
+.question.wrong .explain-toggle { background:linear-gradient(180deg,#ffedd5,#fed7aa); color:#9a3412; border-color:#fdba74; }
+.explain-toggle[aria-expanded="true"] { background:linear-gradient(180deg,#ffedd5,#fed7aa); color:#9a3412; border-color:#fdba74; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 3px 8px rgba(249,115,22,.22); }
+.explain-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
 .explanation { display:none; margin-top:10px; border-inline-start:4px solid #f97316; background:#fff7ed; border-radius:7px; padding:12px; }
 .explanation.show { display:block; }
-.explain-text { direction:rtl; text-align:right; font-size:1.02rem; line-height:1.9; margin:0; unicode-bidi:plaintext; }
-.explain-en { direction:ltr; text-align:left; margin:10px 0 0; padding-top:10px; border-top:1px solid #fed7aa; color:#475569; font-size:.94rem; line-height:1.7; unicode-bidi:plaintext; }
+.explain-text { direction:rtl; text-align:right; font-size:.85rem; line-height:1.75; margin:0 0 12px; unicode-bidi:plaintext; }
+.explain-en { direction:ltr; text-align:left; margin:0; padding:12px 12px 0; border-top:2px dashed #fdba74; background:linear-gradient(180deg,#fff3e6 0%, transparent 100%); border-radius:0 0 5px 5px; color:#5b4636; font-size:.78rem; line-height:1.6; unicode-bidi:plaintext; }
 .explain-en b { color:#0f2742; }
 .term { direction:ltr; unicode-bidi:isolate; display:inline-block; font-weight:800; color:#0f2742; }
 .opt-name { background:#dbeafe; border:1px solid #bfdbfe; border-radius:6px; padding:1px 6px; margin:0 2px; }
@@ -95,10 +101,12 @@ footer { text-align:center; color:#64748b; padding:24px; }
   .options { gap:6px; }
   .option label { gap:6px; border-width:1px; border-radius:6px; padding:7px 9px; font-size:.76rem; line-height:1.32; }
   .letter { flex-basis:18px; width:18px; height:18px; font-size:.7rem; }
-  .explain-toggle { margin-top:9px; padding:6px 8px; font-size:.82rem; }
+  .explain-toggle { margin-top:8px; width:30px; height:26px; }
+  .explain-toggle .chev { width:9px; height:9px; }
+  .explain-toggle .chev::before { width:6px; height:6px; }
   .explanation { padding:10px; }
-  .explain-text { font-size:.92rem; line-height:1.75; }
-  .explain-en { font-size:.84rem; line-height:1.58; }
+  .explain-text { font-size:.78rem; line-height:1.65; margin-bottom:10px; }
+  .explain-en { font-size:.72rem; line-height:1.55; padding:10px 10px 0; }
   .chapter-head { grid-template-columns:1fr; }
   .cards { grid-template-columns:1fr; }
 }
@@ -158,7 +166,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q1_3"><span class="letter">D</span>Fonts</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السؤال يطلب الخيار اللي <b>ليس من تطبيقات</b> رسوميات الحاسب. <b>Transaction processing</b> تخص أنظمة قواعد البيانات والمعاملات المالية، ما لها علاقة بإنتاج الصور أو التعامل البصري. أما <b>User interfaces</b> فهي بالأساس تعتمد على رسم العناصر البصرية على الشاشة - الأزرار والقوائم وكل شي - فهي تطبيق صريح للرسوميات. والـ<b>Digital maps</b> مثل خرائط جوجل تستخدم الرسوميات لعرض البيانات المكانية. أما <b>Fonts</b> فعرض الخطوط على الشاشة (Type rendering) ذُكر صراحة في السلايدات كتطبيق. الفكرة: السلايدات في Module 1 ذكرت بالنص هذه الثلاثة كتطبيقات، والمعاملات هي الدخيل.</p>
@@ -192,7 +200,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q2_3"><span class="letter">D</span>Text processing</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات حددت ثلاثة فروع رئيسية لرسوميات الحاسب: <b>Modeling</b> و<b>Rendering</b> و<b>Animation</b>. فاللي يسألك 'وش الفرع الأساسي'، الإجابة <b>Modeling</b> لأنه يهتم بالتمثيل الحاسوبي للهندسة وبناء النماذج ثلاثية الأبعاد. أما <b>Transaction processing</b> فهي معاملات قواعد بيانات، لا علاقة لها بالرسوميات أصلاً. و<b>Data mining</b> مجال تحليل بيانات يستخرج المعلومات من قواعد بيانات ضخمة - مفيد بمجاله لكنه ليس فرعاً من الرسوميات هنا. و<b>Text processing</b> معالجة نصوص، شي مختلف تماماً. القاعدة: الفروع الثلاثة هي النمذجة والعرض والتحريك، فأي خيار خارج هذي الثلاثة غلط.</p>
@@ -226,7 +234,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q3_3"><span class="letter">D</span>Sentiment analysis</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السؤال يبحث عن مجال يستخدم الرسوميات بشكل أساسي. <b>AI and Robotics</b> يستخدمون الرسوميات بكثرة في المحاكاة البصرية للروبوتات وتدريب نماذج الذكاء الاصطناعي على بيئات ثلاثية الأبعاد. أما <b>Network security</b> فمجال أمن الشبكات، يهتم بالتشفير والحماية - لا صلة قوية بالرسوميات. و<b>Opinion mining</b> و<b>Sentiment analysis</b> كلاهما تحليل نصوص وعواطف الناس في المنشورات، ليس من تطبيقات الرسوميات. تذكر: الرسوميات تستخدم في كل ما يحتاج إنتاج بصري - السيمولاتورات والمحاكاة والعروض، لذلك Robotics & AI الأنسب.</p>
@@ -260,7 +268,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q4_3"><span class="letter">D</span>Modeling</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Geometric Modeling</b> هو الوصف الحاسوبي للهندسة - أي كيف نمثل الأشكال والأسطح ثلاثية الأبعاد داخل الكمبيوتر. هذا تعريف مباشر من Module 8. أما <b>Geometric Interpretation</b> فهو تفسير معنى الأرقام والمعادلات، شي تعليمي وليس مصطلحاً تقنياً. و<b>Geometric Computing</b> مصطلح عام جداً يشمل أي حساب هندسي. و<b>Geometric Algorithm</b> يشير لخوارزمية معينة، وليس وصفاً حاسوبياً للهندسة. الفكرة: السلايدات تستخدم 'modeling' بمعنى 'تمثيل حاسوبي'، فحفظ هذا الاقتران.</p>
@@ -294,7 +302,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q5_3"><span class="letter">D</span>CMYK</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السؤال يبحث عن الخيار اللي <b>ليس</b> فضاء ألوان معروف. الإجابة <b>CYMK</b> لأنها اختصار غلط - الترتيب الصحيح للحروف هو <b>CMYK</b> (Cyan, Magenta, Yellow, Key/Black). أما <b>RGB</b> فهو فضاء الألوان الشهير للشاشات (أحمر، أخضر، أزرق). و<b>HSV</b> هو فضاء Hue-Saturation-Value الذي يستخدم بكثرة في التطبيقات الفنية. و<b>CMYK</b> هو الفضاء المعتمد في الطباعة. الفخ هنا أن CYMK و CMYK تبدوان متشابهتين لكن CYMK ليس مصطلحاً صحيحاً.</p>
@@ -328,7 +336,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q6_3"><span class="letter">D</span>Light Entering Diode</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>LCD (Liquid Crystal Display)</b> هي التقنية اللي توضع فيها كرستالات سائلة بين قطبين كهربائيين وفلترين استقطاب - وهذا تعريف حرفي من السلايدات. الكهرباء تدور استقطاب الكرستالات فيمر الضوء. أما <b>CRT (Cathode Ray Tube)</b> فيستخدم شعاع إلكترونات على فوسفور، لا كرستالات. و<b>OLED</b> (الاسم الصحيح: Organic Light Emitting Diode) - الخيار C كتبه غلط 'Original' بدلاً من 'Organic'، وفي OLED كل بكسل يبعث ضوءه بنفسه بلا backlight. و<b>'Light Entering Diode'</b> ليس مصطلحاً موجوداً، الصحيح LED.</p>
@@ -362,7 +370,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q7_3"><span class="letter">D</span>JPG</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>GPU (Graphics Processing Unit)</b> هي الدائرة المتخصصة لتسريع الرسوميات ومعالجة الصور. مصممة بآلاف الأنوية المتوازية لأن الرسوميات عمل متوازي بطبيعته. أما <b>CPU</b> فمعالج عام يستخدم لكل شي، مو متخصصاً للرسوميات. و<b>ALU (Arithmetic Logic Unit)</b> هي وحدة داخل المعالج تعمل العمليات الحسابية، وحدة فرعية وليست مسرّعاً مستقلاً. و<b>JPG</b> أصلاً صيغة ملف صور وليست دائرة كهربائية! الكلمة المفتاحية: 'designed to accelerate graphics' → GPU.</p>
@@ -396,7 +404,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q8_3"><span class="letter">D</span>Polygon meshes</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في برامج CAD/CAM (التصميم والتصنيع بمساعدة الحاسب) <b>Polygon meshes</b> هي التمثيل الأكثر استخداماً لأنها مرنة لنمذجة أي شكل معقد - تأخذ مجموعة قمم وأضلاع وأوجه. أما <b>Point clouds</b> فهي مجرد نقاط بلا روابط - مفيدة من الماسحات الضوئية لكن صعبة في التعديل والإنتاج الصناعي. و<b>Audio samples</b> صوت وليس هندسة! و<b>Text tokens</b> رموز نصية، مجال مختلف تماماً. السلايدات في Module 8 ذكرت أن مشكلة point clouds عدم وجود اتصال بين النقاط، بينما polygon meshes توفر هذا الاتصال.</p>
@@ -430,7 +438,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q9_3"><span class="letter">D</span>Encrypting a framebuffer</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Rasterization</b> = تحويل الأشكال الهندسية (مثل المثلثات) إلى بكسلات على الشاشة. هذي عملية أساسية في خط أنابيب الرسوميات. أما <b>Creating a 3D object</b> فهذي عملية نمذجة (modeling) وليست rasterization. و<b>Converting a pixel image into vector format</b> هذا عكس rasterization تماماً - يسمى vectorization. و<b>Encrypting a framebuffer</b> غير منطقي - framebuffer هو ذاكرة الصورة، لا علاقة لـrasterization بالتشفير. اذكر: rasterization = من الأشكال إلى البكسلات (shapes → pixels).</p>
@@ -464,7 +472,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q10_3"><span class="letter">D</span>A ray tracing recursion method</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Z-buffer</b> يحل مشكلة الرؤية: 'أي مثلث في الأمام؟' بشكل بسيط وسريع - لكل بكسل يخزن قيمة العمق (z)، ولما يجي مثلث جديد يقارن z مع المخزن ويرسم إذا كان أقرب. هذي الطريقة سريعة وبسيطة لكن تحتاج <b>ذاكرة إضافية</b> لتخزين z-buffer (depth buffer) لكل بكسل. أما 'Slow and memory-free' فعكس الحقيقة - Z-buffer سريع. و'Only for texture compression' غلط تماماً - لا علاقة بضغط الـtextures. و'Ray tracing recursion' غلط - Z-buffer يستخدم في rasterization مو في ray tracing. الفكرة الجوهرية: سريع وبسيط مقابل ذاكرة أكثر.</p>
@@ -498,7 +506,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q11_3"><span class="letter">D</span>Median only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Barycentric interpolation</b> تعطيك قيمة (مثل لون أو عمق) في أي نقطة داخل المثلث بناءً على قيم <b>القمم الثلاث</b>. الفكرة: تحسب أوزان (u, v, w) للقمم وتجمعها مرجحة. أما <b>Center of the triangle</b> فنقطة واحدة فقط، ما تكفي لاستيفاء قيم في كل النقاط. و<b>Angle bisector</b> منصف الزاوية له استخدامات هندسية أخرى لكن ليس للاستيفاء اللوني. و<b>Median only</b> المتوسط الهندسي خط واحد، لا يفيد. القاعدة: في الـbarycentric، نأخذ من القمم (vertices).</p>
@@ -532,7 +540,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q12_3"><span class="letter">D</span>Diamond rule</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">قاعدة الـ<b>Diamond rule</b> هي المعيار في rasterization للخطوط: البكسل يعتبر على الخط إذا مر الخط عبر شكل المعين (diamond) داخله. هذي تجنب مشاكل التضاعف ومشاكل الـedge cases. أما <b>Triangle rule</b> فاسم ليس قياسي. و<b>Point-cloud rule</b> لا علاقة بـpoint clouds برسم الخطوط. و<b>Depth-sort rule</b> هذا اسم مرتبط بترتيب المثلثات (painter's algorithm)، شي مختلف تماماً.</p>
@@ -566,7 +574,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q13_3"><span class="letter">D</span>Two or three</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في ray tracing، لكي نعطي لون لكل بكسل، نحتاج <b>ضوء واحد على الأقل</b> لكل بكسل. هذا الحد الأدنى - شعاع يرسل من الكاميرا عبر البكسل ليرى أول جسم يقابله ويأخذ لونه. ممكن أكثر للأشعة الانعكاسية أو ضد الـaliasing، لكن السؤال يسأل عن الحد الأدنى = واحد. أما اثنان أو ثلاثة فاختيارات أكثر من الحد الأدنى، صحيحة في بعض الحالات لكن ليست المطلوبة هنا.</p>
@@ -600,7 +608,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q14_3"><span class="letter">D</span>LCD always produces deeper blacks</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">الفرق الجوهري بين <b>OLED</b> و<b>LCD</b>: في OLED كل بكسل (كل LED عضوي) يبعث ضوءه <b>بنفسه</b>، بدون backlight خلفية. أما في LCD فيوجد backlight يضيء طوال الوقت والكرستالات تتحكم في مرور الضوء. الفائدة في OLED: لما تبي تعرض أسود، تطفئ البكسل = أسود حقيقي ('blacker blacks'). الخيار A عكس الواقع تماماً (يخلط بينهم). الخيار B غلط لأن OLED لا يحتاج backlight. الخيار D عكس الحقيقة - OLED هو اللي يعطي أسود أعمق وليس LCD.</p>
@@ -634,7 +642,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q15_3"><span class="letter">D</span>A color-space conversion</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Flicker fusion rate</b> = التردد اللي عنده يبدأ ضوء وميض أن يبدو ثابتاً للعين البشرية. في الإضاءة العالية يحتاج 80Hz تقريباً، وفي الإضاءة المنخفضة يكفي 20-30Hz. هذا اللي يحدد لماذا الفيلم 24fps والتلفزيون 30fps يبدو سلساً. أما 'fixed 24Hz' فغلط لأنه يختلف حسب الإضاءة. و'screen resolution' لا علاقة بالتردد. و'color-space conversion' عملية مختلفة تماماً تتعلق بالألوان.</p>
@@ -668,7 +676,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q16_3"><span class="letter">D</span>The closest intersected object along the ray</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في ray casting، نطلق شعاع من الكاميرا ونبحث عن <b>أقرب</b> جسم يقابله الشعاع. ليه الأقرب؟ لأن الأقرب هو اللي نشوفه، والباقي مخفي خلفه. الخوارزمية تقول: 'لكل شعاع، جد أقرب جسم'. أما 'البرايتست' فلا علاقة بالرؤية - شي مضيء قد يكون خلف شي قاتم. و'الأبعد' عكس المطلوب - الأبعد مخفي. و'الأكبر' لا علاقة بالحجم بالرؤية - مكعب صغير قدامك قد يخفي جبل خلفه.</p>
@@ -702,7 +710,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q17_3"><span class="letter">D</span>Shader program</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Raster image</b> = شبكة ثنائية الأبعاد من البكسلات، كل بكسل له قيمة لون. هذا التعريف الكلاسيكي للصورة الرقمية. أما <b>Vector curve</b> فمنحنى محدد بمعادلة رياضية، يقابل raster. و<b>3D polygon mesh</b> شي ثلاثي الأبعاد، ليس صورة 2D. و<b>Shader program</b> كود يعمل على GPU، شي مختلف تماماً. الكلمة المفتاحية: '2D grid of pixels' = raster.</p>
@@ -736,7 +744,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q18_3"><span class="letter">D</span>Only when brighter</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في خوارزمية Z-buffer، الـfragment يحدّث الـframebuffer <b>فقط إذا</b> اجتاز اختبار العمق (z-value أقل من المخزن). يعني: 'هل أنا أقرب من اللي مرسوم؟ إذا نعم، أرسم نفسي وأحدث z'. هذي القاعدة هي اللي تضمن الرؤية الصحيحة. أما 'دائماً' فيلغي الفائدة كاملاً - راح ترسم كل شي حتى المخفي. و'بعد ما تنتهي كل المثلثات' غلط - Z-buffer يعمل لحظياً مع كل fragment. و'الأكثر إضاءة' خلط - Z-buffer يهتم بالعمق وليس السطوع.</p>
@@ -770,7 +778,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q19_3"><span class="letter">D</span>It only works with ray tracing</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Painter's algorithm</b> يرتب المثلثات من الأبعد للأقرب ثم يرسمها بهذا الترتيب. مشكلته الرئيسية: <b>المثلثات المتقاطعة أو المتداخلة بشكل معقد</b>. لو مثلث A أمام B في جزء وخلفه في جزء آخر، أي ترتيب راح يخطئ. هذي مشكلة لا حل لها بـpainter's. الخيار A غلط - يقدر يرسم محدبة. الخيار B غلط - الـpainter's <i>يحتاج</i> ترتيب، هذا أصل الخوارزمية. الخيار D غلط - Painter's خوارزمية rasterization مستقلة عن ray tracing.</p>
@@ -804,7 +812,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q20_3"><span class="letter">D</span>O(n) pixels</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات قارنت: لو نتحقق ساذجاً من كل بكسل في الشاشة لخط طوله n، نحتاج <b>O(n²) بكسل</b>. لكن نحن نريد فقط البكسلات اللي على الخط، عددها <b>O(n)</b> - وهذا الكفاءة المطلوبة من DDA و Bresenham. السؤال يطلب العدد الأمثل (اللي نتحقق منه فعلاً للخط) = O(n). الخيارات الأخرى أكبر بكثير وغير ضرورية. اذكر: خط بطول n على شاشة، نزور n بكسل فقط، مو n².</p>
@@ -838,7 +846,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q21_3"><span class="letter">D</span>Drawing triangles only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Ray tracing</b> فكرته الأساسية: <b>عكس اتجاه الضوء</b>. بدل ما نتبع كل الفوتونات من المصادر (والأغلبية ما تصل للكاميرا = هدر)، نبدأ من الكاميرا ونرسل أشعة عكسياً عبر كل بكسل. هذا منطقي جداً وعملي حسابياً. الخيار B غلط - ray tracing يستخدم الضوء بشدة. والـC غلط - يدعم كل أنواع الإضاءة. والـD غلط - رسم المثلثات ليس rayt، هذا rasterization. الكلمة المفتاحية: 'reverse light path'.</p>
@@ -872,7 +880,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q22_3"><span class="letter">D</span>A mesh topology rule</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Framebuffer</b> = منطقة من الذاكرة تخزن بكسلات الصورة. كأنها لوحة الرسم اللي الكمبيوتر يكتب عليها قبل العرض. عرض الصورة x ارتفاعها = حجم الـframebuffer. أما 'camera lens' فجزء فيزيائي من الكاميرا، لا علاقة بالذاكرة. و'display refresh circuit' دائرة كهربائية للشاشة، شي مختلف. و'mesh topology rule' قواعد لشبكات المضلعات، لا علاقة.</p>
@@ -906,7 +914,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q23_3"><span class="letter">D</span>Audio, text, and encryption</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات حددت المكونات الأساسية للـrendering: <b>الضوء، السطوح، الكاميرا، والصور</b>. هذي العناصر اللي نحتاجها لإنتاج صورة من نموذج ثلاثي الأبعاد - مصدر ضوء يضيء، سطوح تعكس، كاميرا تستقبل، صورة تتولّد. الخيار A ضيق جداً - يفتقد الضوء. والـB قواعد بيانات وشبكات، لا علاقة. والـD صوتيات ونصوص وتشفير، أبعد ما يكون.</p>
@@ -940,7 +948,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q24_3"><span class="letter">D</span>Rasterization and ray tracing</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات أوضحت فقط <b>عائلتين</b> لخوارزميات الـrendering: <b>Rasterization</b> (لكل مثلث: أي بكسلات يغطي؟) و<b>Ray Tracing</b> (لكل بكسل: أي مثلث يراه؟). هذي التقسيمة الجوهرية في المنهج. الخيار A: modeling و animation ليست خوارزميات rendering، هي فروع أخرى. الخيار B: ضغط وتشفير، أمور خارج موضوعنا. الخيار C: عينات وتخزين، شي عام. الكلمة المفتاحية: 'main families of rendering algorithms'.</p>
@@ -974,7 +982,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q25_3"><span class="letter">D</span>Compute LCD polarization</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Top-left rule</b> في rasterization المثلثات يحل مشكلة المثلثات اللي تتشارك حافة - لو ما عندنا قاعدة، البكسل اللي على الحافة قد يتم رسمه مرتين (مرة من كل مثلث) = مشاكل بصرية. القاعدة تقول: البكسل ينتمي للمثلث إذا كانت الحافة 'top' أو 'left'. الخيار B (اختيار frame rate) لا علاقة. الخيار C (BVH) شي ثاني. الخيار D (LCD polarization) فيزياء العرض، لا علاقة. الفكرة: تجنب الفراغات أو التكرار على الحواف المشتركة.</p>
@@ -1008,7 +1016,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q26_3"><span class="letter">D</span>Writing text-only documents</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">تعريف السلايدات للرسوميات بسيط ومباشر: 'استخدام الحواسيب لإنشاء المرئيات والتفاعل معها'. الكلمات المفتاحية: <b>create + interact + visuals</b>. هذا التعريف يجمع الجوانب الثلاثة. الخيارات الأخرى بعيدة تماماً: قواعد بيانات، تشفير، نصوص. هذي ليست رسوميات. اذكر: الرسوميات = إنشاء + تفاعل + مرئيات.</p>
@@ -1042,7 +1050,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q27_3"><span class="letter">D</span>Increasing internet speed only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في تعريف الرسوميات، كلمة <b>'visuals'</b> ترتبط بالتحدي الحاسوبي: 'big data' - يعني تمثيلات حاسوبية فعّالة لبيانات بصرية ضخمة. الصور والنماذج 3D بيانات هائلة، نحتاج خوارزميات وطرق تخزين كفؤة. الخيار A (إبدال الصور بالصوت) لا منطق. والـB (تجنب التفاعل) يناقض جوهر الرسوميات. والـD (سرعة الإنترنت) شي ثاني. اذكر: visuals = big data → كفاءة في التمثيل.</p>
@@ -1076,7 +1084,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q28_3"><span class="letter">D</span>Control and ease of use for people</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">كلمة <b>'create'</b> في تعريف الرسوميات ترتبط بـ: <b>control و ease of use</b> للناس. يعني نحتاج أدوات تخلي البشر يقدرون يصنعون بسهولة - واجهات سهلة، تحكم بديهي. هذا تحدي حقيقي في الرسوميات. الخيارات A و B و C كلها بعيدة تماماً عن المنطق - قواعد بيانات وفوتونات وراوترات شبكات. اذكر: create = ease of use للناس.</p>
@@ -1110,7 +1118,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q29_3"><span class="letter">D</span>Depth</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Resolution</b> = الأبعاد المكانية للصورة (مثل 1920x1080). كأنك تسأل 'كم بكسل عرضاً وارتفاعاً؟'. أما <b>Frame rate</b> فعدد الإطارات في الثانية، بُعد زمني وليس مكاني. و<b>Bitrate</b> معدل البيانات (للفيديو/الصوت)، شي مختلف. و<b>Depth</b> دقة قيمة البكسل (مثل 8-bit, 24-bit)، يتعلق بالألوان وليس الأبعاد. اذكر: مكاني = resolution.</p>
@@ -1144,7 +1152,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q30_3"><span class="letter">D</span>Camera position</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Depth (أو Precision)</b> في الصورة = دقة قيمة البكسل. مثلاً 1-bit (أبيض/أسود) أو 24-bit RGB (16 مليون لون). يحدد كم لون يمكن تمثيله. أما 'Spatial width and height' فالـResolution. و'Frames per second' فالـframe rate (للفيديو). و'Camera position' شي مختلف تماماً (المكان وليس عمق البكسل). اذكر: depth = bits لكل بكسل.</p>
@@ -1178,7 +1186,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q31_3"><span class="letter">D</span>120 fps</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات حددت أن الـ<b>Film = 24 fps</b>، أما التلفزيون (interlaced) = 30 fps، والكمبيوتر (progressive) = 60 fps. ليه 24؟ لأنه الحد الأدنى الذي يبدو سلساً مع تأثير 'cinema motion blur' المرغوب. أما 30 و60 و120 فأرقام أخرى (تلفزيون، كمبيوتر، شاشات سريعة). الكلمة المفتاحية: 'Film' → 24fps.</p>
@@ -1212,7 +1220,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q32_3"><span class="letter">D</span>Cathode Ray Tube (CRT)</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>CRT (Cathode Ray Tube)</b> = شاشات قديمة تستخدم شعاع إلكترونات يمرر سطراً سطراً (raster scan) على فوسفور. هذا تعريف صريح في السلايدات. أما <b>LCD</b> فيستخدم كرستالات سائلة مع backlight. و<b>OLED</b> كل بكسل LED عضوي يضيء نفسه. و<b>GPU</b> دائرة معالجة وليست شاشة عرض! الكلمة المفتاحية: 'electron beam line-by-line' = CRT.</p>
@@ -1246,7 +1254,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q33_3"><span class="letter">D</span>Stores pixels in the framebuffer</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>OLED</b> ميزته الأساسية: 'blacker blacks' = تباين أعلى. ليه؟ لأن كل بكسل LED يضيء نفسه، فلما يبي يعرض أسود يطفئ نفسه = أسود حقيقي. أما LCD مع backlight دائم، حتى السود يكون رمادي قليلاً (الضوء يسرّب). الخيار B عكس الحقيقة - OLED <i>لا</i> يحتاج backlight. والـC عكس - CRT يستخدم شعاع. والـD غير دقيق - فريم بفر يخزن البكسلات أصلاً. اذكر: OLED → contrast أعلى + أسود أعمق.</p>
@@ -1280,7 +1288,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q34_3"><span class="letter">D</span>To increase network speed</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">الهدف الأساسي من الـrendering: <b>تقريب كيف تبدو الأشياء في العالم الحقيقي</b> = simulating the physics of light. نحاول نخلق صور تبدو حقيقية. أما 'encrypt security models' فلا علاقة بالرسم. و'reduce storage' ضغط ملفات، شي مختلف. و'increase network speed' شي تماماً. الكلمة المفتاحية: 'how things look in real world' = rendering goal.</p>
@@ -1314,7 +1322,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q35_3"><span class="letter">D</span>Database table</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Input</b> الـrendering = <b>3D model</b>. نأخذ نموذج ثلاثي الأبعاد ونحوّله لصورة. أما 'Rasterized pixels' فهذي مرحلة وسطى أو ناتج جزئي وليست المدخل الأصلي. و'Video file' فيديو منتهي وليس مدخل. و'Database table' جدول بيانات، لا علاقة. التدفق: 3D model → renderer → 2D image.</p>
@@ -1348,7 +1356,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q36_3"><span class="letter">D</span>2D image</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Output</b> الـrendering = <b>2D image</b>. الناتج النهائي صورة ثنائية الأبعاد على الشاشة. التدفق الكلي: 3D model (input) → render → 2D image (output). أما '3D model' فالمدخل وليس المخرج. و'Audio stream' صوت، لا علاقة. و'BVH tree' بنية بيانات داخلية، ليست مخرج نهائي. اذكر: input = 3D، output = 2D.</p>
@@ -1382,7 +1390,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q37_3"><span class="letter">D</span>Motion capture</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>DDA (Digital Differential Analyzer)</b> خوارزمية كلاسيكية لرسم <b>الخطوط</b> في rasterization. فكرتها: حركة x واحدة في كل خطوة، وزيادة y بـm (الميل). بسيطة وفعّالة. أما 'SAH splitting' فللـBVH (تقسيم الفضاء). و'MIP mapping' لتصفية الـtextures. و'Motion capture' لالتقاط الحركة في الـanimation. كلها لها استخداماتها في الرسوميات لكن DDA = خطوط.</p>
@@ -1416,7 +1424,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q38_3"><span class="letter">D</span>Triangles are color spaces</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">ليه المثلثات أهم شكل في rasterization؟ لأن أي مضلع (حتى المعقد) يمكن تقطيعه إلى <b>مثلثات</b>. أيضاً المثلثات مستوية دائماً في 3D (3 نقاط تحدد مستوى)، ومحدبة دائماً، فالـrasterization والـinterpolation أسهل. هذي قاعدة في GPU. أما 'no vertices' فغلط - المثلثات لها قمم. و'not flat' غلط - دائماً مستوية. و'color spaces' لا علاقة بالشكل. اذكر: مثلثات = أبسط مضلع، يمكن بناء كل شي منها.</p>
@@ -1450,7 +1458,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q39_3"><span class="letter">D</span>The highest frame rate</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات شرحت: المثلث = 3 خطوط = 3 نصف-مستويات (half-planes). نقطة تكون داخل المثلث إذا كانت <b>داخل كل الثلاث نصف-مستويات</b>. تخيلها: كل ضلع يقسم الفضاء لجانبين، نقطة المثلث في الجانب 'الداخلي' من الأضلاع الثلاثة جميعها. الخيار A (outside one) عكس المطلوب - لازم داخل كلها. والـB (closest ray hit) شي من ray tracing. والـD (frame rate) لا علاقة بالشكل الهندسي.</p>
@@ -1484,7 +1492,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q40_3"><span class="letter">D</span>The triangle bounding box</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">لتفادي فحص كل بكسل بالشاشة (مهدر للأداء)، نحسب <b>bounding box</b> للمثلث: أصغر مستطيل يحتوي القمم الثلاث. ثم نفحص فقط البكسلات داخل هذا المستطيل. ميزة كبيرة للمثلثات الصغيرة. أما 'whole screen' فهذا الطريق الساذج. و'every object' أكبر مما يلزم. و'all MIP map levels' لا علاقة بفحص داخل المثلث. الفكرة: bounding box أولاً، ثم inside test على البكسلات داخله.</p>
@@ -1518,7 +1526,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q41_3"><span class="letter">D</span>Database keys</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">إحداثيات <b>Barycentric</b> = أوزان (u, v, w) للقمم الثلاث، يجمعون 1. كأنك تقول 'لون النقطة = u×لون V0 + v×لون V1 + w×لون V2' بشرط u+v+w=1. هذي الأوزان داخل المثلث كلها موجبة. أما 'depth values only' فالعمق شي مختلف. و'frame rates' لا علاقة. و'database keys' بعيد جداً. اذكر: barycentric = أوزان مجموعها = 1.</p>
@@ -1552,7 +1560,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q42_3"><span class="letter">D</span>fps = pixels / second</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">المعادلة البارامترية للشعاع: <b>r(t) = o + t·d</b>. <b>o</b> = نقطة الأصل (الكاميرا)، <b>d</b> = اتجاه الشعاع، <b>t</b> = البارامتر (المسافة على الشعاع). تأخذ t وتحصل على نقطة على الشعاع. أما 'z = ax + by' فمعادلة مستوى. و'RGB = HSV' خلط فضاءات لون لا منطق. و'fps = pixels/second' معادلة معدل ولا تمثل شعاع. اذكر صيغة الشعاع: r(t) = o + td.</p>
@@ -1586,7 +1594,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q43_3"><span class="letter">D</span>Frame rate</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">لو الاتجاه <b>d مُسوّى (normalized)</b> بطول 1، فالبارامتر <b>t</b> يعطي مباشرة <b>المسافة على الشعاع</b>. ليه؟ لأن |d|=1 يعني خطوة t واحدة = مسافة 1. هذي خاصية مهمة في ray tracing لحسابات المسافات. أما 'texture resolution' و'color channels' و'frame rate' فجميعها أرقام مختلفة لا علاقة بالـt. اذكر: d مُسوّى → t = مسافة.</p>
@@ -1620,7 +1628,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q44_3"><span class="letter">D</span>Exponential growth with the number of bounces</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">كلفة <b>Ray tracing</b> تنمو <b>أسياً</b> مع عدد الارتدادات (bounces). شعاع أصلي → يرتد → يرتد → كل ارتداد يلد أشعة جديدة (انعكاس، انكسار، ظل). 2 ارتدادات = 2² أشعة، 16 ارتداد = 2¹⁶ أشعة (هائل!). هذا التحدي الحاسوبي الرئيسي. الخيارات الأخرى لا تشرح الكلفة الحقيقية. اذكر: ray tracing → كلفة أسية مع الارتدادات.</p>
@@ -1654,7 +1662,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q45_3"><span class="letter">D</span>Rasterization is only for audio</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">الفرق الجوهري: <b>Rasterization</b> يلف على المثلثات أولاً (for each triangle: which pixels does it cover?)، أما <b>Ray casting</b> يلف على البكسلات أولاً (for each pixel: which triangle is visible?). نفس المشكلة، ترتيب مختلف. اختياراتنا: الـA يلخص هذا. الـB غلط - الترتيب مختلف. والـC غلط - ray casting يحتاج كل المشهد. والـD لا علاقة بـaudio.</p>
@@ -1688,7 +1696,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q46_3"><span class="letter">D</span>Replacing images with text</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">تحديات الرسوميات الحاسوبية: <b>إدارة كميات ضخمة من البيانات البصرية بكفاءة</b>. صور 4K، نماذج 3D معقدة، فيديوهات HD - كل هذي بيانات هائلة تحتاج خوارزميات وتخزين كفؤة. أما 'internet speed' فمجال شبكات. و'removing user interaction' عكس هدف الرسوميات. و'replacing images with text' لا منطق. الكلمة المفتاحية: 'big visual data'.</p>
@@ -1722,7 +1730,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q47_3"><span class="letter">D</span>Controls LCD polarization</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في النظرة الفيزيائية للضوء داخل الـrendering: المصدر يبعث فوتونات، السطح <b>يعكسها</b>، الكاميرا تستقبل. السطح دوره الأساسي: <b>عكس الفوتونات</b>. أما 'encrypts' فلا منطق. و'frame rate' لا علاقة بالفيزياء. و'LCD polarization' دور الشاشة وليس السطح في المشهد. اذكر: سطح هندسي = يعكس الفوتونات.</p>
@@ -1756,7 +1764,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q48_3"><span class="letter">D</span>Which pixels are covered by this triangle?</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في <b>rasterization</b> نسأل: <b>'أي بكسلات يغطيها هذا المثلث؟'</b>. الترتيب: نلف على المثلثات، ولكل مثلث نحدد البكسلات اللي يغطيها. عكس ray tracing اللي يسأل 'أي مثلث مرئي من هذا البكسل؟'. الخيار A هو سؤال ray tracing مو rasterization! الـB قواعد بيانات. الـC sensors. كلمة مفتاحية: 'covered' = rasterization.</p>
@@ -1799,7 +1807,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q49_3"><span class="letter">D</span>Independent of scene size</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Naive ray casting بسيط لكن مكلف جداً: <b>O(N) في الأجسام × O(N) في الأشعة</b>. لكل شعاع نختبر تقاطعه مع كل جسم. لو 1M شعاع و 1M جسم = ترليون اختبار! هذا اللي يدفعنا لاستخدام spatial acceleration. أما 'constant time' فحلم. و'limited by brightness' لا منطق. و'independent of scene size' عكس الواقع. القاعدة: ساذج = O(N).</p>
@@ -1833,7 +1841,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q50_3"><span class="letter">D</span>Replace cameras</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">هدف <b>spatial acceleration structures</b>: <b>تقليل عدد اختبارات التقاطع</b>. نقسم الفضاء أو نجمع الأجسام بحيث لكل شعاع نفحص جسمين بدلاً من الكل. وأيضاً نخلي كل اختبار أسرع باستخدام bounding volumes بسيطة. أما 'increase refresh rate' فشي عن الشاشات. و'remove all geometry' غلط - نحتاج الهندسة! و'replace cameras' بعيد جداً. اذكر: spatial accel = تقليل التقاطعات.</p>
@@ -1867,7 +1875,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q51_3"><span class="letter">D</span>k-d trees</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات في Module 6 سردت أنواع spatial acceleration structures: <b>Uniform grids</b>، <b>Bounding Volume Hierarchies (BVHs)</b>، <b>k-d trees</b>، <b>quadtree/octree</b>، <b>BSP</b>. <b>Voronoi diagrams</b> غير مذكور كهيكل تسريع - هو تقسيم رياضي للفضاء حول نقاط، شي مختلف. الباقي كلها مذكورة. القاعدة: تذكر الأسماء الخمسة الأساسية في السلايدات.</p>
@@ -1901,7 +1909,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q52_3"><span class="letter">D</span>k-d trees</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات فرّقت: <b>BVHs</b> = object partitioning (تقسيم الأجسام)، أما <b>k-d trees</b> = space partitioning (تقسيم الفضاء). الفرق: في object partitioning نقسم القائمة (مجموعة الأجسام في كل صندوق)، أما في space partitioning نقسم الفضاء (كل صندوق له حدود مكانية ثابتة). الخيارات BVH و AABBs و object clustering كلها <i>object partitioning</i>. اذكر: k-d tree = أهم مثال لـspace partitioning.</p>
@@ -1935,7 +1943,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q53_3"><span class="letter">D</span>Changing RGB to HSV</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Uniform grids</b> تسرّع ray casting بطريقة بسيطة: نقسم الفضاء لخلايا منتظمة، ولكل شعاع نمشي خطوة بخطوة في الخلايا اللي يخترقها فقط (مثل rasterization للخطوط في 3D). نفحص فقط الأجسام في الخلايا اللي 'تُرسم' بالشعاع. الخيار B (testing every object twice) غلط - عكس الكفاءة. والـC (removing bounding boxes) لا علاقة. والـD (RGB to HSV) لا منطق.</p>
@@ -1969,7 +1977,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q54_3"><span class="letter">D</span>The texture is compressed</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Bounding volume مفيد فقط لما <b>اختبار الحجم أرخص من الاختبار التفصيلي للجسم</b>. مثلاً: لو لدينا مثلث معقد بكثير من الحسابات، نضعه داخل كرة بسيطة. اختبار الشعاع مع الكرة أرخص. لو الشعاع ما يقابل الكرة = ما يقابل المثلث (مضمون). الخيار A لا منطق. والـC شاشة OLED لا علاقة. والـD ضغط texture لا علاقة. اذكر: bounding volume يفيد لما يكون أرخص.</p>
@@ -2003,7 +2011,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q55_3"><span class="letter">D</span>Scene graph</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Sphere</b> أبسط شكل لاختبار التقاطع (معادلة واحدة)، لكن غالباً <b>ليست محكمة (not tight)</b> - تترك فراغ كبير حول الجسم. مثلاً جسم طويل ضمن كرة = الكرة كبيرة جداً، وكثير من الأشعة 'تصيب الكرة' لكن لا تصيب الجسم → اختبارات إضافية بلا فائدة. أما <b>OBB</b> فأحكم لكنها أصعب رياضياً (تحتاج توجيه). و'Triangle mesh' هذا الجسم نفسه! و'scene graph' بنية تنظيمية، ليست bounding volume.</p>
@@ -2037,7 +2045,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q56_3"><span class="letter">D</span>They often provide a tighter fit around objects</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>AABBs (Axis-Aligned Bounding Boxes)</b> غالباً <b>أحكم</b> من الكرات لأن الصندوق يضبط نفسه على محاور المشهد. لجسم مستطيل أو غير دائري، الصندوق يحضنه بشكل أفضل من الكرة. الخيار A 'easier to intersect' غير دقيق - الكرة أسهل لكن غير محكمة. الـB غامض. الـC غلط - rasterization مجال آخر. الكلمة المفتاحية: 'tighter fit'.</p>
@@ -2071,7 +2079,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q57_3"><span class="letter">D</span>A texture filter</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>BVH (Bounding Volume Hierarchy)</b> = هيكل <b>تقسيم الأجسام بشكل تكراري (recursive)</b> باستخدام bounding volumes. تبدأ بـbox يحتوي كل المشهد، تقسمه لقسمين، كل قسم له box، وتتكرر. الخيار B (uniform grid) شي مختلف - منتظم وليس هرمي. والـC (shading) موضوع آخر تماماً. والـD (texture filter) موضوع ثالث. اذكر: BVH = هرمية + bounding volumes + object partitioning.</p>
@@ -2105,7 +2113,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q58_3"><span class="letter">D</span>Both sides have the same depth</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في بناء <b>BVH top-down</b>، نتكرر بتقسيم الصندوق لقسمين. متى نتوقف؟ <b>لما يبقى عدد قليل من الأجسام (primitives) في الصندوق</b>. لو واصلنا للأبعد، ما في فائدة - الصناديق فاضية أو شبه فاضية. الخيارات الأخرى (يصير مكعب، مساحة سطح صفر، نفس العمق على الجانبين) ليست معايير وقف منطقية. اذكر: قليل من الـprimitives = توقف.</p>
@@ -2139,7 +2147,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q59_3"><span class="letter">D</span>Number of colors</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>SAH (Surface Area Heuristic)</b> يختار التقسيم اللي <b>يقلل التكلفة المتوقعة لمرور الشعاع</b>. النظرية: احتمال أن شعاع يمر بصندوق أصغر داخل أكبر = SA(صغير)/SA(كبير). من هذي نموذج تكلفة، نختار التقسيم الأقل تكلفة. الخيارات A, B, D لا علاقة لها بـSAH. اذكر: SAH = تكلفة شعاع متوقعة.</p>
@@ -2173,7 +2181,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q60_3"><span class="letter">D</span>Image compression</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات ذكرت تطبيقات spatial acceleration structures خارج ray tracing: <b>collision detection</b>، <b>view frustum culling</b>، <b>path and motion planning</b>. <b>Image compression</b> لم يُذكر - هذا تطبيق مختلف يعتمد على Fourier أو wavelets أو deep learning، لا علاقة بالـspatial structures. الباقي مذكور. اذكر: السلايدات حددت ثلاث استخدامات إضافية.</p>
@@ -2207,7 +2215,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q61_3"><span class="letter">D</span>Color spaces</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>k-d trees</b> = بنية <b>تقسيم فضاء متكيفة (adaptive)</b>. ليه adaptive؟ لأنها تقسم الفضاء حسب توزيع الأجسام، مو بشكل ثابت. عكس uniform grids اللي خلاياها متساوية. الخيار B (object partitioning) خطأ - k-d trees = space partitioning. والـC (LCD) لا علاقة. والـD (color space) لا علاقة. اذكر: k-d tree = adaptive space partitioning.</p>
@@ -2241,7 +2249,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q62_3"><span class="letter">D</span>Ray casting only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات ذكرت أن spatial acceleration structures تستخدم في <b>collision detection</b> و<b>path/motion planning</b> بالإضافة إلى ray tracing. الخيار B يجمع الاثنين. الـA ضيق (motion فقط). والـC غلط - rasterization تستخدمها لـview frustum culling لكن ليست الاستخدام الوحيد. والـD ضيق على ray casting فقط.</p>
@@ -2275,7 +2283,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q63_3"><span class="letter">D</span>Using no memory</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Object partitioning (BVH)</b> أسهل <b>تحديثاً</b> لما الأجسام تتحرك. ليه؟ لأن كل عقدة تخص أجساماً محددة - تنقل الجسم، تحدث عقدته. أما space partitioning (k-d tree)، عقده تخص <i>مناطق فضاء ثابتة</i>، فلما يتحرك جسم قد ينتقل بين عقد متعددة وتحتاج إعادة بناء كاملة. الخيار A (أسرع للأقرب) صحيح للـspace partitioning مو BVH! والـB (no bounding volumes) عكس البنية. والـD (no memory) خيال.</p>
@@ -2309,7 +2317,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q64_3"><span class="letter">D</span>Oriented bounding box (OBB)</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>OBB (Oriented Bounding Box)</b> = صندوق يستطيع التوجه بأي زاوية ليناسب الجسم. أحكم من AABB لأنه يحاكي توجه الجسم، لكن يحتاج تحويلات (rotation) أكثر لكل اختبار شعاع. أما Sphere فأبسط ولكن غير محكم. AABB متوسط (محاذي للمحاور فقط). و Uniform grid هيكل تسريع وليس bounding volume. القاعدة: OBB = أحكم + يحتاج توجيه.</p>
@@ -2343,7 +2351,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q65_3"><span class="letter">D</span>Keyframe poses</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">اختبار شعاع-AABB يستخدم <b>طريقة الـSlab</b>: نتخيل الصندوق كثلاث 'شرائح' (slabs) - واحدة لكل محور. لكل شعاع نحسب <b>t intervals</b> (متى الشعاع يدخل ويخرج الشريحة) على كل محور. لو تقاطعت الفترات الثلاث = الشعاع يقابل الصندوق. الخيار B (specular shininess) موضوع Shading. والـC (MIP levels) موضوع textures. والـD (keyframes) موضوع animation.</p>
@@ -2377,7 +2385,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q66_3"><span class="letter">D</span>Only 2D raster images</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Adaptive space partitioning</b> (مثل k-d trees) أفضل لمشاهد بـ<b>أجسام موزعة غير منتظمة</b>. ليه؟ لأنه يستطيع 'الذكاء' في وضع تقسيمات أكثر حيث الكثافة عالية وأقل حيث متفرقة. أما <b>uniform grid</b> فهو ثابت = مهدر للذاكرة في المناطق الفارغة، وغير كاف في المناطق الكثيفة. الخيار A (uniform distribution) عكس - في الموحد uniform grid يعمل جيداً. الـC و D لا منطق.</p>
@@ -2420,7 +2428,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q67_3"><span class="letter">D</span>A mesh storage method</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Shading model</b> = نموذج حاسوبي لتفاعل الضوء مع السطح. يحدد كيف نلون السطح بناءً على الضوء، الهندسة، والمواد. أما 'texture file format' فصيغة ملف صور (مثل PNG)، شي مختلف. و'display cable' كابل عرض. و'mesh storage method' طريقة تخزين شبكة. كلها لا علاقة بحسابات الإضاءة. اذكر: shading = light-surface interaction.</p>
@@ -2454,7 +2462,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q68_3"><span class="letter">D</span>Depth sorting</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Lambertian reflectance</b> يصف <b>الأسطح المُنْتَشِرَة (diffuse) المطفية</b> - مثل الورق أو الطلاء المط. تنشر الضوء بانتظام في كل الاتجاهات. عكس <b>specular</b> (المرايا والأسطح اللامعة). أما 'transparent glass' فينتمي لنماذج انكسار/شفافية مختلفة. و'depth sorting' لا علاقة بالإضاءة. اذكر: Lambertian = diffuse مطفي = max(0, dot(N,L)).</p>
@@ -2488,7 +2496,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q69_3"><span class="letter">D</span>Texture resolution only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في Lambertian shading، شدة الإضاءة تعتمد بقوة على <b>الزاوية بين اتجاه الضوء (L) ونورمال السطح (N)</b>. الصيغة: max(0, dot(N,L)). لما السطح متعامد على الضوء = أقصى إضاءة. لما السطح موازي للضوء = صفر. هذي قاعدة لامبرت الجيب-تمامية. الخيارات الأخرى (file size، framebuffer width، texture resolution) لا علاقة بقوة الضوء على السطح.</p>
@@ -2522,7 +2530,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q70_3"><span class="letter">D</span>Ambient, diffuse, and specular terms</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Phong reflection model</b> يجمع <b>ثلاثة مكونات</b>: <b>Ambient</b> (إضاءة خلفية موحدة)، <b>Diffuse</b> (مطفي، يتبع لامبرت)، <b>Specular</b> (لمعان مرآوي). كل سطح فيه نسبة من كل واحد. الخيارات A, B, C لا علاقة بنموذج إضاءة. اذكر: Phong = ambient + diffuse + specular.</p>
@@ -2556,7 +2564,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q71_3"><span class="letter">D</span>Triangle coverage</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Specular highlights</b> = اللمعان المرآوي - بقع لامعة على السطوح المصقولة. تأتي من انعكاس مرآوي للضوء حيث الانعكاس يطابق اتجاه الكاميرا. أما <b>Diffuse chalk reflection</b> فعكس specular - مطفي. والـC (texture compression) موضوع آخر. والـD (triangle coverage) موضوع آخر تماماً. اذكر: specular = لمعان مرآوي.</p>
@@ -2590,7 +2598,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q72_3"><span class="letter">D</span>Never</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Flat shading</b> يقيّم نموذج الإضاءة <b>مرة واحدة لكل مضلع</b>، ويلون كل المضلع بنفس اللون. سريع جداً لكن ينتج شكل 'مفصّل' (faceted look). أما 'مرة لكل texel' فلا يقيس مفهوم flat shading. و'مرة لكل BVH node' لا علاقة بالإضاءة. و'never' غلط - flat shading يحسب. اذكر: flat = مرة لكل وجه.</p>
@@ -2624,7 +2632,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q73_3"><span class="letter">D</span>Only shadow maps</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Gouraud shading</b> يقيّم الإضاءة <b>عند القمم (vertices)</b> ويستوي الألوان داخل المضلع. أفضل من flat لأنه يعطي تدرج أنعم. أما 'every BVH node' فلا علاقة بالإضاءة. و'only the camera' لا منطق. و'shadow maps only' موضوع آخر. اذكر: Gouraud = إضاءة عند القمم + interpolate الألوان.</p>
@@ -2658,7 +2666,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q74_3"><span class="letter">D</span>Interpolates normals and shades per fragment</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Phong shading</b> = يستوي <b>النورمالات</b> بين القمم ويقيّم نموذج الإضاءة <b>عند كل fragment</b> (لكل بكسل). أفضل جودة لأن النورمال المستوية تعطي إضاءة سلسة. الخيارات الأخرى (sorting triangles، uniform grid، CRT hardware) لا علاقة بـPhong shading. اذكر: Phong shading = interpolate normals + shade per fragment.</p>
@@ -2692,7 +2700,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q75_3"><span class="letter">D</span>Deletes hidden surfaces</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Normal</b> السطح يحدد <b>اتجاه السطح المحلي</b> - مثل سهم يخرج عمودي من السطح. مهم للإضاءة لأنه يحدد الزاوية مع الضوء (dot(N,L)). بدونه ما نقدر نحسب إضاءة. الخيارات الأخرى لا علاقة بمفهوم الـnormal. اذكر: normal = اتجاه السطح، أساس حسابات الإضاءة.</p>
@@ -2726,7 +2734,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q76_3"><span class="letter">D</span>Only image width</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في rasterization، shading يحسب عادة من <b>الضوء + خصائص السطح + موقع الكاميرا</b>. هذي الثلاثة المكونات الأساسية في Phong وغيره. أما 'mesh file names' فاسم ملف، لا علاقة بالحسابات. و'monitor type' لا علاقة. و'image width' لا علاقة. اذكر: shading يحتاج light + material + viewpoint.</p>
@@ -2760,7 +2768,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q77_3"><span class="letter">D</span>1 / r</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">للضوء النقطي (point light)، الإضاءة (irradiance) تنخفض بمعكوس مربع المسافة: <b>1/r²</b>. من فيزياء الضوء: مساحة الكرة تنمو بـr²، فطاقة الفوتونات تنشر على مساحة أكبر = كثافة أقل. مثلاً مصباح: قريب منه ساطع، بعيد عنه خافت بكثير. الخيار A (r²) عكس. والـB (constant) عكس قانون الفيزياء. والـD (1/r) خاطئ.</p>
@@ -2794,7 +2802,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q78_3"><span class="letter">D</span>Specular reflection</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">اتجاه الكاميرا (view direction) مهم بشدة في <b>specular reflection</b> لأن الانعكاس المرآوي يعتمد على زاوية مع الكاميرا - تتحرك = اللمعان يتحرك. أما <b>Lambertian diffuse</b> فمستقل عن الكاميرا (view-independent). و'image resolution' و'AABB construction' لا علاقة بالإضاءة. اذكر: specular = view-dependent، diffuse = view-independent.</p>
@@ -2828,7 +2836,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q79_3"><span class="letter">D</span>A GPU memory size</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Diffuse reflection</b> ينشر الضوء في كل الاتجاهات بانتظام، فالسطح يبدو بنفس السطوع <b>بغض النظر عن مكان الكاميرا</b> = view-independent. هذي خاصية لامبرت. أما 'visible from one camera' فعكس - diffuse مرئي من كل الاتجاهات. و'texture coordinate' شي ثاني. و'GPU memory size' لا علاقة. اذكر: diffuse = view-independent.</p>
@@ -2862,7 +2870,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q80_3"><span class="letter">D</span>Network routing</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Blinn-Phong</b> هو نموذج إضاءة قياسي في <b>OpenGL/DirectX</b> rasterization. يستخدم halfway vector H بدلاً من R لتسريع الحسابات. لذلك هو الافتراضي في GPUs التقليدية. أما 'database indexing' فلا علاقة برسوميات. و'audio compression' لا علاقة. و'network routing' لا علاقة. اذكر: Blinn-Phong = OpenGL/DirectX rasterization.</p>
@@ -2896,7 +2904,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q81_3"><span class="letter">D</span>Uniform grid traversal</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Phong shading</b> يعطي لمعان أنعم من Gouraud لأنه يستوي النورمالات ويحسب الإضاءة لكل fragment. عند Gouraud، إذا اللمعان بين قمتين، قد يضيع. Phong يحفظه. أما <b>Flat shading</b> فالأخشن (faceted). و<b>Painter's algorithm</b> ليس shading method بل visibility. و<b>Uniform grid</b> هيكل تسريع، لا shading. اذكر: Phong > Gouraud > Flat (في الجودة).</p>
@@ -2930,7 +2938,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q82_3"><span class="letter">D</span>dot(H,N) using the halfway vector</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Blinn-Phong</b> يستبدل <b>dot(R,V)</b> الأصلية في Phong بـ<b>dot(H,N)</b> حيث H = halfway vector بين L و V (مُسوّى). ليه؟ لأن حساب dot(H,N) أرخص حسابياً من dot(R,V)، وأقرب لـRenderman/OpenGL APIs. النتيجة قريبة جداً للأصلية. الخيارات A, B, C ليست بدائل صحيحة. اذكر: Blinn-Phong = R,V استبدلت بـH,N.</p>
@@ -2964,7 +2972,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q83_3"><span class="letter">D</span>To split a BVH</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في Lambertian: <b>max(0, dot(N,L))</b>. ليه max مع 0؟ لأن dot(N,L) سالب يعني الضوء يأتي من خلف السطح = لا إضاءة. ما نقبل قيم سالبة (لا تعني فيزيائياً 'سحب ضوء'). الـclamp إلى الصفر منطقي. الخيارات B, C, D لا علاقة بمعنى max(0, ...) في الإضاءة. اذكر: max(0, ...) لمنع الإضاءة السالبة.</p>
@@ -2998,7 +3006,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q84_3"><span class="letter">D</span>The ray origin</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في Phong، <b>shininess coefficient</b> يتحكم في <b>حجم وحدة اللمعان</b>. قيمة كبيرة = لمعة صغيرة حادة (مثل مرآة أو معدن). قيمة صغيرة = لمعة منتشرة كبيرة (مثل بلاستيك). الكود: dot(R,V)^shininess. الخيارات A, C, D لا علاقة بـshininess. اذكر: shininess كبير = لمعة صغيرة حادة.</p>
@@ -3041,7 +3049,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q85_3"><span class="letter">D</span>Only shader uniforms</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Implicit geometry</b> = تعريف السطح بـ<b>معادلة أو دالة</b>. مثل الكرة: f(x,y,z) = x²+y²+z²-1 = 0. النقاط اللي تحقق المعادلة هي السطح. أما 'vertex-face lists' فهذي explicit (مثل polygon meshes). و'framebuffer pixels' بكسلات شاشة، شي مختلف. و'shader uniforms' متغيرات برنامج تظليل. اذكر: implicit = معادلة، explicit = نقاط محددة.</p>
@@ -3075,7 +3083,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q86_3"><span class="letter">D</span>Frame rates</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Polygon meshes</b> هي التمثيل الأكثر شيوعاً للهندسة الصريحة (explicit) - نحدد القمم ونقول هذي الأوجه. أما 'algebraic equations' فimplicit. و'color spaces' فضاءات ألوان. و'frame rates' معدلات إطارات. الفكرة: explicit = نقول صراحة 'هذي القمم وهذي الأوجه'.</p>
@@ -3109,7 +3117,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q87_3"><span class="letter">D</span>Only texture width</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>SDF (Signed Distance Function)</b> تعطي <b>المسافة للسطح مع إشارة</b> (inside/outside). نقطة خارج السطح = موجب، داخل = سالب، على السطح = صفر. مفيد جداً لـrendering و collision detection. أما 'RGB color' فلون. و'FPS' معدل إطار. و'texture width' عرض texture. اذكر: SDF = مسافة + إشارة.</p>
@@ -3143,7 +3151,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q88_3"><span class="letter">D</span>Points at a fixed distance from the origin</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">معادلة الكرة الضمنية: x²+y²+z² = 1 (للوحدة). هذا يعني <b>كل النقاط على مسافة ثابتة من الأصل</b> = 1. هذي المسافة الإقليدية من المركز. أما 'triangle winding' فترتيب القمم في المثلث. و'LCD voltage' فيزياء العرض. و'texture filtering' تصفية textures. اذكر: كرة = نقاط بمسافة ثابتة من المركز.</p>
@@ -3177,7 +3185,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q89_3"><span class="letter">D</span>Point clouds</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>CSG (Constructive Solid Geometry)</b> implicit لأنه يبني الأشكال بدمج <b>دوال</b> (مثل دالة كرة + دالة مكعب - دالة كرة صغيرة) باستخدام عمليات Boolean. أما <b>Bézier curves</b> و<b>Polygon meshes</b> و<b>Point clouds</b> فكلها explicit - نحدد فيها نقاط أو منحنيات صراحةً. الفرق: CSG معادلات مدمجة، الباقي نقاط/قمم.</p>
@@ -3211,7 +3219,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q90_3"><span class="letter">D</span>Z-buffer clearing</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Bézier curves and patches</b> تستخدم لنمذجة <b>المنحنيات والأسطح السلسة</b>. مثل الخطوط في برامج التصميم - تتحكم بنقاط، تنحني بسلاسة. أما 'depth buffering' فZ-buffer. و'CRT scanning' مسح شاشة. و'Z-buffer clearing' تفريغ z-buffer. اذكر: Bézier = منحنيات سلسة.</p>
@@ -3245,7 +3253,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q91_3"><span class="letter">D</span>Shader uniforms only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Polygon meshes</b> تتكون عادة من <b>vertices, edges, faces</b>. القمم نقاط 3D، الأضلاع تربطها، الأوجه (عادة مثلثات) تشكل السطح. أما 'pixels' بكسلات شاشة 2D. و'light probes' للـenvironment mapping. و'shader uniforms' متغيرات. اذكر: mesh = vertices + edges + faces.</p>
@@ -3279,7 +3287,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q92_3"><span class="letter">D</span>Triangle</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Triangle</b> = أكثر primitive شيوعاً في الـpolygon meshes. ليه؟ لأن: 1) أي مضلع يمكن تقطيعه لمثلثات، 2) مثلث دائماً مستوي ومحدب، 3) GPUs مُحسّنة للمثلثات. أما 'circle' فمنحنى مستمر، لا يستخدم في meshes. و'audio wave' صوت. و'texture texel' عنصر texture. اذكر: mesh primitive الأشهر = triangle.</p>
@@ -3313,7 +3321,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q93_3"><span class="letter">D</span>Only work in 2D</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Triangle meshes شائعة لأنها <b>تشتغل ممتاز مع rasterization و GPUs</b>. GPUs الحديثة مصممة خصيصاً لمعالجة مثلثات بشكل متوازي وسريع. أما 'no memory' خيال. و'cannot represent surfaces' عكس الواقع. و'only 2D' غلط - مثلثات 3D معروفة. اذكر: triangles = صديق GPUs.</p>
@@ -3347,7 +3355,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q94_3"><span class="letter">D</span>As a display refresh rate</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Triangle soup</b> = طريقة بسيطة لتخزين المثلثات: لكل مثلث نخزن قممه الثلاث مباشرة، <b>بدون اتصال صريح</b> بين المثلثات المجاورة. سهل، لكن يكرر القمم المشتركة. ولا يمكنك بسهولة 'إيجاد المثلثات اللي تتشارك قمة'. الخيار A (half-edge) عكس - half-edge فيه روابط. والـC, D غلط.</p>
@@ -3381,7 +3389,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q95_3"><span class="letter">D</span>Replacing normals with frame rates</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Vertex + face list</b> أحسن من triangle soup لأنه <b>يعيد استخدام القمم المشتركة</b>. نحفظ القمم مرة واحدة في قائمة، ثم الأوجه تشير بأرقام (indices) للقمم. لو قمة مشتركة بين 10 مثلثات، نحفظها مرة فقط. توفير ذاكرة كبير. الخيارات A (إزالة المثلثات)، B (تخزين الألوان فقط)، D (استبدال normals) كلها لا منطق.</p>
@@ -3415,7 +3423,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q96_3"><span class="letter">D</span>Traverse neighboring mesh elements</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Half-edge structure</b> = بنية تخزن روابط بين القمم والأضلاع والأوجه، فتسهل <b>المرور على الجيران (mesh traversal)</b>. مثلاً 'أعطني كل الأوجه اللي تتشارك هذي القمة' أو 'كل الأضلاع حول وجه معين'. مفيد لتعديل meshes. الخيارات A, B, C لا علاقة. اذكر: half-edge = سهولة المرور بالمشبكة.</p>
@@ -3449,7 +3457,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q97_3"><span class="letter">D</span>They cannot model complex geometry</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">عيب الـ<b>explicit</b> الرئيسي: <b>اختبار inside/outside صعب</b>. لو عندي point cloud أو mesh، كيف أعرف نقطة معينة داخل الشكل أم خارجه؟ نحتاج خوارزميات معقدة (مثل ray casting). أما implicit، نحسب الدالة - موجبة = داخل، سالبة = خارج. الخيار B (difficult to render) عكس - explicit سهل في الـrendering. والـC (require only equations) شي ضمني. والـD (cannot model complex) عكس.</p>
@@ -3483,7 +3491,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q98_3"><span class="letter">D</span>Network encryption</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Explicit meshes</b> ملائمة جداً للـ<b>rasterization المباشرة</b>. GPUs مصممة لاستقبال vertex stream + faces ورسمها مباشرة. هذي الميزة الأساسية. الخيار A (hiding vertices) لا منطق. والـC (only equations) implicit. والـD (encryption) لا علاقة. اذكر: explicit + rasterization = ممتاز.</p>
@@ -3517,7 +3525,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q99_3"><span class="letter">D</span>LCD and CRT only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات أوضحت trade-off: <b>سهولة الـrendering مقابل سهولة النمذجة/الاستعلام</b>. Implicit سهلة للاستعلامات (inside/outside) لكن صعبة في rendering. Explicit عكس. لازم تختار حسب الحاجة. الخيارات الأخرى لا تمثل trade-off حقيقي في الكتاب.</p>
@@ -3551,7 +3559,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q100_3"><span class="letter">D</span>Boolean operations such as union, intersection, and difference</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>CSG</b> يبني الأشكال باستخدام عمليات <b>Boolean: union, intersection, difference</b>. مثل: مكعب - كرة = مكعب فيه فجوة. سهل لتمثيل الأجسام المعقدة في CAD. الخيارات الأخرى (depth tests، LCD، motion capture) لا علاقة بالـCSG. اذكر: CSG = Boolean على الأشكال.</p>
@@ -3585,7 +3593,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q101_3"><span class="letter">D</span>Keyframe editing</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Implicit representations</b> ممتازة لـ<b>inside/outside tests</b> - فقط نحسب الدالة! مثلاً للكرة: لو x²+y²+z² < 1 = داخل. سريع وسهل. أما 'GPU triangle streams' فexplicit/meshes. و'LCD' عرض شاشة. و'keyframe editing' للـanimation. اذكر: implicit = inside/outside سريع.</p>
@@ -3619,7 +3627,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q102_3"><span class="letter">D</span>Texture filters</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Level sets</b> (مجموعات مستوى) و<b>algebraic surfaces</b> (أسطح جبرية) كلاهما implicit - تُحدد بمعادلات. مثلاً السطح الجبري: f(x,y,z) = 0. والـlevel set: مجموعة النقاط حيث f = c. أما 'triangle soup' فexplicit/mesh. و'displays' شاشات. و'texture filters' تصفية texture. اذكر: equations = implicit.</p>
@@ -3662,7 +3670,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q103_3"><span class="letter">D</span>A ray only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Polygon mesh</b> = يمثل سطح باستخدام مضلعات (عادة مثلثات) متصلة. هذا تعريف Module 9. أما '2D pixel grid' فهذي raster image. و'display backlight' فيزياء العرض. و'ray only' شعاع فقط، شي مختلف. اذكر: mesh = سطح مكوّن من مضلعات.</p>
@@ -3696,7 +3704,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q104_3"><span class="letter">D</span>They remove the need for vertices</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Triangle meshes شائعة جداً لأن <b>أي مضلع يمكن تقطيعه لمثلثات</b>، وهذا يبسط كل شي - rasterization، interpolation، GPU processing. أما 'cannot be rasterized' عكس الحقيقة. و'store audio well' لا منطق. و'remove vertices' غلط - تحتاج قمم. اذكر: مثلث = أبسط مضلع.</p>
@@ -3730,7 +3738,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q105_3"><span class="letter">D</span>Only a BVH cost</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Vertex</b> في الـmesh يخزن: <b>الموقع (x,y,z)</b> وممكن خصائص إضافية مثل normal، texture coordinate، color. القمة هي 'بطاقة الهوية' للنقطة. أما 'pixel color only' فمحدود جداً. و'refresh rate' غريب. و'BVH cost' لا علاقة. اذكر: vertex = position + attributes.</p>
@@ -3764,7 +3772,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q106_3"><span class="letter">D</span>Which vertices form each face</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Face list</b> يخزن <b>أي القمم تكوّن كل وجه</b> - عادة بـindices تشير لقائمة القمم. مثلاً face = (0, 1, 2) يعني مثلث يستخدم القمم 0 و 1 و 2 من vertex list. الخيارات A, B, C لا علاقة بمحتوى face list. اذكر: face list = indices للقمم.</p>
@@ -3798,7 +3806,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q107_3"><span class="letter">D</span>Disable normals</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">القمم المشتركة (shared vertices) <b>تقلل التكرار وتحفظ الاتصال</b> بين المثلثات. لو ما نشاركها، كل مثلث يخزن قممه = تكرار + معلومات الاتصال ضائعة. الخيار B (independent faces) عكس - الاتصال يضيع. والـC (prevent interpolation) عكس - interpolation تشتغل على الـvertices المشتركة. والـD (disable normals) غلط.</p>
@@ -3832,7 +3840,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q108_3"><span class="letter">D</span>Being easy to parse</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Triangle soup</b> بسيط لكن ضعيف في <b>topology traversal</b>. السبب: ما فيه روابط بين المثلثات، فلا تقدر بسهولة 'أعطني الجيران لهذا المثلث'. تحتاج بحث كامل. الخيار A (drawing) سهل بالـsoup. والـC (storing) سهل. والـD (parsing) سهل. الضعف الحقيقي في الجيران/الاتصال.</p>
@@ -3866,7 +3874,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q109_3"><span class="letter">D</span>The texture filter</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Topology</b> = <b>كيف ترتبط القمم والأضلاع والأوجه</b> - بدون النظر للمواقع الفعلية. مثل: 'القمة A مربوطة بـB و C'، بغض النظر عن إحداثياتهم. أما الـgeometry فالمواقع الفعلية. الخيارات A, B, D لا علاقة بـtopology. اذكر: topology = اتصال، geometry = مواقع.</p>
@@ -3900,7 +3908,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q110_3"><span class="letter">D</span>The actual positions/shapes</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Geometry</b> = <b>المواقع/الأشكال الفعلية</b>. أين القمم، وكيف يبدو الشكل. أما <b>topology</b> فالاتصالات. مثلاً: نفس topology يمكن أن يكون له geometries مختلفة (نفس عدد القمم والاتصالات، لكن مواقع مختلفة = أشكال مختلفة). الخيارات A, B, C لا علاقة.</p>
@@ -3934,7 +3942,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q111_3"><span class="letter">D</span>Frame-rate selection</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Normals</b> على meshes تستخدم بشكل أساسي للـ<b>shading</b>. النورمال تحدد اتجاه السطح، نحتاجه لحساب dot(N,L) في Lambertian أو لـPhong shading. أما 'network routing' فلا علاقة. و'audio mixing' لا. و'frame-rate selection' لا. اذكر: normal = أساس الـshading.</p>
@@ -3968,7 +3976,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q112_3"><span class="letter">D</span>Count FPS</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Texture coordinates (UV)</b> على meshes تستخدم لـ<b>ربط مواقع 2D في الـtexture بنقاط على السطح</b>. كأنك تلصق ورق هدية على صندوق - تحدد أي جزء من الورق على أي جزء من الصندوق. الخيارات الأخرى لا علاقة بـtexture mapping.</p>
@@ -4002,7 +4010,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q113_3"><span class="letter">D</span>Every shader is flat</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Manifold mesh</b> = الحي المحلي حول أي قمة <b>يتصرف كسطح</b>. يعني: لو وقفت على نقطة في الـmesh، الجوار يشكل قطعة سطح مستقيمة، بدون 'فجوات' أو 'تقاطعات غريبة'. مهم لخوارزميات كثيرة. الخيارات الأخرى لا علاقة بمفهوم manifold.</p>
@@ -4036,7 +4044,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q114_3"><span class="letter">D</span>Connectivity information</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Mesh operations</b> تصبح أسهل لما نخزن <b>معلومات الاتصال (connectivity)</b>. مثل: إيجاد الجيران، حساب نورمال السطح، تنعيم الـmesh - كلها تحتاج اتصال. بدون اتصال (triangle soup) كل عملية صعبة. اذكر: connectivity = مفتاح العمليات.</p>
@@ -4070,7 +4078,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q115_3"><span class="letter">D</span>An LCD voltage</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">للـ<b>rendering</b> على GPU، نرسل عادة <b>vertex streams + indexed faces/triangles</b>. القمم + فهرس يقول 'هذي المثلثات تستخدم هذي القمم'. هذي الـAPI المعتادة في OpenGL/DirectX. الخيارات الأخرى لا منطق.</p>
@@ -4104,7 +4112,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q116_3"><span class="letter">D</span>Algebraic surfaces</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Point clouds</b> = تعريف صريح لمواقع نقاط على السطح. كأنك تسأل 'وين كل نقطة على السطح؟' وتعطي قائمة. أما 'level sets'، 'distance functions'، 'algebraic surfaces' فكلها implicit. اذكر: point cloud = نقاط صريحة.</p>
@@ -4138,7 +4146,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q117_3"><span class="letter">D</span>They are display devices</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Meshes شائعة لأنها <b>توازن بين المرونة والتخزين والكفاءة في الـrendering</b>. مرنة (تمثل أي شكل)، اقتصادية في التخزين (تشارك القمم)، وسريعة في GPU. الخيار A عكس - mesh explicit مو implicit. والـB لا منطق. والـC لا منطق - mesh ليس شاشة.</p>
@@ -4172,7 +4180,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q118_3"><span class="letter">D</span>Reusing shared vertices through indices</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Indexed mesh</b> يساعد بشكل أساسي بـ<b>إعادة استخدام القمم المشتركة عبر الـindices</b>. بدلاً من تكرار قمة مشتركة 10 مرات (مرة لكل مثلث)، نخزنها مرة ونشير لها 10 مرات. توفير ضخم في الذاكرة. الخيارات الأخرى لا منطق.</p>
@@ -4206,7 +4214,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q119_3"><span class="letter">D</span>A light intensity only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Face في vertex-face mesh تخزن عادة كـ<b>indices تشير للقمم</b>. مثلاً مثلث (0, 1, 2) يعني 'استخدم القمم 0 و 1 و 2'. هذي الطريقة المعتادة. الخيارات A, B, C, D الباقية ليست من معنى face. اذكر: face = indices.</p>
@@ -4240,7 +4248,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q120_3"><span class="letter">D</span>Z-buffer values</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">إحداثيات الـtexture المخزنة على mesh تُسمى <b>UV coordinates</b>. كل قمة لها (u, v) في فضاء الـtexture - تحدد أي بكسل من الـtexture يطلع على كل قمة. الخيارات A (SAH), C (CRT), D (Z-buffer) لا علاقة بـtextures. اذكر: UV = texture coords.</p>
@@ -4283,7 +4291,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q121_3"><span class="letter">D</span>Backlight to voltage only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Spatial transformation</b> = دالة <b>تحوّل نقاط</b> من فضاء إحداثيات لآخر. مثل: نقطة في فضاء الموديل تتحول لفضاء العالم. الخيارات B, C, D (ألوان، صوت، backlight) لا علاقة بتحويل النقاط الفضائية.</p>
@@ -4317,7 +4325,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q122_3"><span class="letter">D</span>Texture sampling</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Translation</b> (الإزاحة) = أحد أنواع التحويلات الشائعة. الأنواع المعتادة: Translation، Rotation، Scale، Shear. أما 'flicker fusion' فعن العين البشرية. و'framebuffer' للذاكرة. و'texture sampling' لـtextures.</p>
@@ -4351,7 +4359,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q123_3"><span class="letter">D</span>Topology only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Scaling</b> يغير <b>حجم</b> الجسم. تكبير = scale أكبر من 1، تصغير = أقل من 1. ممكن مختلف على كل محور (sx, sy, sz). الخيارات A, B, D (color space، frame rate، topology) لا علاقة بـscaling.</p>
@@ -4385,7 +4393,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q124_3"><span class="letter">D</span>Axis</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في 3D، الـ<b>rotation</b> تبقي <b>محور (axis)</b> ثابت. مثلاً Rx(θ) يدور حول محور x ويبقي x ثابت. لذلك في 3D نتحدث عن 'دوران حول المحور x' أو 'حول y' أو 'حول z'. الخيارات A, B, C (framebuffer، texture، color channel) لا علاقة.</p>
@@ -4419,7 +4427,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q125_3"><span class="letter">D</span>To replace geometry</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">نستخدم <b>4×4 matrices</b> في 3D لكي نتمكن من تركيب <b>affine transformations بما فيها translation</b>. Translation في 3×3 ما تشتغل، لكن مع 4×4 (homogeneous coords) تشتغل كلها. الخيار B (4 colors) لا منطق. والـC (avoid multiplication) عكس. والـD (replace geometry) لا منطق.</p>
@@ -4453,7 +4461,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q126_3"><span class="letter">D</span>Building a color histogram</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Transformation composition</b> = تطبيق <b>سلسلة من التحويلات كضرب مصفوفات</b>. M_final = M3 × M2 × M1. هذي قوة المصفوفات - نخزن سلسلة طويلة في matrix واحدة. الخيارات A, C, D (compression، CRT، histogram) لا علاقة.</p>
@@ -4487,7 +4495,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q127_3"><span class="letter">D</span>GPUs cannot multiply matrices</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>ترتيب التحويلات يهم</b> لأن ضرب المصفوفات <b>ليس تبادلياً</b> عموماً: M1 × M2 ≠ M2 × M1. مثلاً: تدوير ثم إزاحة ≠ إزاحة ثم تدوير. لذلك في الكود نطبق من اليمين لليسار. الخيار A عكس (المصفوفات مختلفة). والـB غلط (كل شي يتحوّل). والـD غلط (GPUs ممتازة في ضرب المصفوفات).</p>
@@ -4521,7 +4529,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q128_3"><span class="letter">D</span>Hierarchical transformations between objects</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Scene graph</b> = هيكل هرمي يخزن <b>التحويلات الهرمية بين الأجسام</b>. مثل جسم الإنسان: الجسم الرئيسي، فوقه الرأس، فوقه العين، إلخ - كل واحد له تحويل بالنسبة للأب. تحرك الجسم = الكل يتحرك معه. الخيارات A, B, C لا علاقة بهيكل الـscene graph.</p>
@@ -4555,7 +4563,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q129_3"><span class="letter">D</span>Texture to audio</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Model transformation</b> ينقل من <b>model space إلى world space</b>. كل جسم له فضاءه الخاص (model space)، نضربه في model matrix لنضعه في المشهد. الخيارات الأخرى لا تمثل هذا الانتقال.</p>
@@ -4589,7 +4597,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q130_3"><span class="letter">D</span>Audio to texture</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>View transformation</b> ينقل من <b>world space إلى camera space</b>. بعد ما الجسم في world space، نحرك المنظر ليكون من زاوية الكاميرا. الخيارات A, C, D لا علاقة بـview transform.</p>
@@ -4623,7 +4631,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q131_3"><span class="letter">D</span>BVH to AABB</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Projection transformation</b> ينقل من <b>camera space إلى clip space</b>. هذي مرحلة الإسقاط (perspective أو orthographic). بعدها نحصل على إحداثيات NDC. الخيارات A, B, D لا علاقة.</p>
@@ -4657,7 +4665,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q132_3"><span class="letter">D</span>An extra coordinate</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Homogeneous coordinates</b> تضيف <b>إحداثي إضافي (w)</b> للنقاط/الاتجاهات. 3D نقطة (x,y,z) تصير (x,y,z,1). هذي تخلي translation وكل التحويلات تشتغل في matrix multiplication. الخيارات الأخرى لا منطق.</p>
@@ -4691,7 +4699,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q133_3"><span class="letter">D</span>Texture resolution</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Linear transformation</b> تحفظ <b>الخطوط كخطوط</b> - الخط المستقيم يبقى مستقيم بعد التحويل. خاصية أساسية. أيضاً تحفظ الأصل (origin) ثابت. الخيارات الأخرى لا تمثل خصائص التحويل الخطي.</p>
@@ -4725,7 +4733,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q134_3"><span class="letter">D</span>A display technology</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Translation</b> وحدها <b>affine، ليست خطية</b> بالإحداثيات العادية. ليه؟ لأنها لا تحفظ الأصل ثابت (تحركه!). لكن مع homogeneous coords (4×4) تشتغل كـmatrix. الخيارات A, C, D لا تصف translation بدقة.</p>
@@ -4759,7 +4767,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q135_3"><span class="letter">D</span>Motion-Volume-Phong</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>MVP = Model-View-Projection</b>. سلسلة التحويلات في graphics pipeline: Model (للأماكن في المشهد) → View (للكاميرا) → Projection (للإسقاط). نطبقها على القمم. الخيارات الأخرى ليست المعنى المعتمد.</p>
@@ -4793,7 +4801,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q136_3"><span class="letter">D</span>Translation should not move directions</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في homogeneous coords، الـ<b>directions</b> تستخدم <b>w = 0</b> لأن الـtranslation يجب ألا يحرّكها. لما w=0، صف الإزاحة في المصفوفة لا يأثر. تخيل اتجاه شمال - مهما حركت الموقع، الاتجاه ثابت. الخيارات A, B, C لا منطق.</p>
@@ -4827,7 +4835,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q137_3"><span class="letter">D</span>u = v = 0 only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في homogeneous coords، نقطة 3D تستخدم <b>w = 1</b>. هذا يسمح بـtranslation عبر إضافة tx, ty, tz في صف الإزاحة. عكس directions اللي w=0. اذكر: نقطة w=1، اتجاه w=0.</p>
@@ -4861,7 +4869,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q138_3"><span class="letter">D</span>They store texture images</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">خاصية مفيدة لمصفوفات الـ<b>rotation</b>: <b>الترانسبوز = المعكوس</b> (R^T = R^-1). تسمى orthonormal matrices. يعني للعكس، فقط ترانسبوز - أسرع بكثير من حساب المعكوس عموماً. الخيارات A, C, D غلط أو خيالية.</p>
@@ -4904,7 +4912,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q139_3"><span class="letter">D</span>Only camera positions</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Textures</b> تستخدم لتخزين <b>تفاصيل مظهر السطح</b> بشكل مضغوط. بدلاً من نمذجة كل تفصيلة هندسياً، نضع 'صورة' على السطح. سريع وفعّال. الخيارات الأخرى لا علاقة.</p>
@@ -4938,7 +4946,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q140_3"><span class="letter">D</span>Changing LCD voltage</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Texture mapping</b> = <b>ربط خصائص الـtexture بالسطوح</b>. ليس فقط ألوان - أي خاصية (normal، roughness، displacement) يمكن تخزينها في texture وتربط بالسطح. الخيارات A, C, D لا علاقة.</p>
@@ -4972,7 +4980,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q141_3"><span class="letter">D</span>Only triangle indices</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Textures تقدر تحوي <b>أكثر من ألوان</b> - normals (normal maps)، depth، roughness، تأثيرات وغيرها. هذي قوة الـtextures. اذكر: textures = أي بيانات سطحية، ليست ألوان فقط.</p>
@@ -5006,7 +5014,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q142_3"><span class="letter">D</span>Environment mapping</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Reflection mapping</b> يُسمى أيضاً <b>environment mapping</b>. الفكرة: نخزن البيئة المحيطة في texture، ثم نستخدمها للانعكاسات على الأسطح اللامعة بدون ray tracing. الخيارات A, B, C لا علاقة.</p>
@@ -5040,7 +5048,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q143_3"><span class="letter">D</span>Depth-buffer allocation</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Environment mapping</b> يعطي <b>انعكاسات تشبه ray tracing</b> لكن في rasterization (أسرع بكثير). تقريبية لكن مفيدة. الخيارات الأخرى لا علاقة.</p>
@@ -5074,7 +5082,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q144_3"><span class="letter">D</span>A vertex list</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Sphere mapping</b> يخزن البيئة في <b>texture واحدة 360 درجة</b> (مثل صورة كرة معكوسة). ميزة: التقاط كامل بصورة واحدة. عيب: تشويش عند الأقطاب. الخيارات A (six cube faces) فهي cube mapping. والـC و D لا علاقة.</p>
@@ -5108,7 +5116,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q145_3"><span class="letter">D</span>A single vertex normal</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Cube mapping</b> يستخدم <b>ست textures على وجوه مكعب</b>. كل وجه يلتقط ربع البيئة في اتجاه معين. توزيع texels أعدل من sphere mapping. الخيارات الأخرى لا علاقة.</p>
@@ -5142,7 +5150,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q146_3"><span class="letter">D</span>Reducing singularities and giving more even texel distribution</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Cube mapping</b> يحسن sphere mapping بـ<b>تقليل الـsingularities وتوزيع texels أعدل</b>. لا تشويش عند الأقطاب. سهل أيضاً في rasterization (نرسم من 6 كاميرات). الخيارات A, B, C لا تمثل التحسين الفعلي.</p>
@@ -5176,7 +5184,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q147_3"><span class="letter">D</span>A polygon mesh</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Shadow mapping</b> يعامل الضوء <b>كأنه كاميرا</b>. نرسم المشهد من منظور الضوء، نحفظ العمق في shadow map. ثم نقارن لكل سطح: 'هل الضوء يراك؟'. الخيارات B, C, D لا علاقة.</p>
@@ -5210,7 +5218,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q148_3"><span class="letter">D</span>Only frame rate</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Shadow map</b> يخزن <b>الرؤية/العمق من الضوء</b>. كل texel فيه يقول 'أقرب شي للضوء في هذا الاتجاه = هذا العمق'. لمعرفة الظل، نقارن عمق الـfragment بقيمة shadow map. الخيارات A, C, D لا علاقة.</p>
@@ -5244,7 +5252,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q149_3"><span class="letter">D</span>A BVH node</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Texel</b> = <b>texture element</b>. مثل pixel للصورة، texel للـtexture. كل خانة في الـtexture. الخيارات A, B, D لا تمثل texel.</p>
@@ -5278,7 +5286,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q150_3"><span class="letter">D</span>Planar, cylindrical, and spherical projection</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات ذكرت إسقاطات بسيطة لـtextures: <b>planar (مستوي)، cylindrical (أسطواني)، spherical (كروي)</b>. الثلاثة طرق شائعة. الخيارات A, B, C ضيقة أو غلط.</p>
@@ -5312,7 +5320,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q151_3"><span class="letter">D</span>BVHs require it</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Perspective-correct interpolation</b> ضروري لأن <b>مسافات الـscreen space ليست متناسبة مع مسافات 3D</b> تحت perspective projection. لو استوينا بسذاجة في 2D، نطلع texture مشوّه. لذلك نستوي u/z, v/z, 1/z ونعكس. الخيارات الأخرى لا منطق.</p>
@@ -5346,7 +5354,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q152_3"><span class="letter">D</span>CRT scanning</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">في texture magnification (التكبير - شاشة قريبة من السطح)، نستخدم <b>bilinear interpolation</b>: أربع texels حول النقطة، نمزجها بالأوزان. تنعم العرض. الخيارات A, C, D لا علاقة.</p>
@@ -5380,7 +5388,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q153_3"><span class="letter">D</span>Mesh topology traversal</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Mipmaps</b> = نسخ متعددة الدقة من الـtexture (downsampled مرات عديدة). تساعد في <b>texture minification aliasing</b> (الكاميرا بعيدة، البكسل يغطي texels كثيرة = aliasing). نختار mipmap level مناسب للبعد. الخيارات A, B, D لا علاقة.</p>
@@ -5414,7 +5422,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q154_3"><span class="letter">D</span>Spatial and depth resolution of the shadow map</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">حد جودة shadow mapping الرئيسي: <b>الدقة المكانية والعمقية للـshadow map</b>. لو الـmap صغير، الظلال تبدو متدرجة. لو الـdepth precision قليلة، 'shadow acne' (تذبذب). الخيارات الأخرى لا تمثل المحدد الحقيقي.</p>
@@ -5448,7 +5456,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q155_3"><span class="letter">D</span>A BVH becomes balanced</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Texture minification</b> = <b>بكسل شاشة واحد يغطي texels كثيرة</b>. الكاميرا بعيدة، فلا نملك خيار: نشوف texture في حجم صغير. لذلك نحتاج تحضير (mipmaps أو averaging). الخيار B (one texel covers many pixels) فهذي magnification. الخيارات C, D لا علاقة.</p>
@@ -5482,7 +5490,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q156_3"><span class="letter">D</span>Capture motion sensors</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>UV atlas</b> يستخدم لـ<b>فرد رقع السطح في فضاء texture 2D</b>. تخيل ربع الأرض المسطّحة - نقدّم العين على شكل قطع متجاورة في 2D، ثم نرسم الـtexture. مهم للأجسام المعقدة. الخيارات A, C, D لا علاقة.</p>
@@ -5525,7 +5533,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q157_3"><span class="letter">D</span>Encrypting data</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Animation</b> في الرسوميات = <b>تمثيل وتحريك الحركة في النماذج 3D</b>. ليس صور ثابتة، ليس ضغط فيديو، بل تحريك حقيقي للنماذج. الخيارات الأخرى لا تمثل animation.</p>
@@ -5559,7 +5567,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q158_3"><span class="letter">D</span>Texture minification</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Animation</b> = وصف حاسوبي لـ<b>الحركة</b>. تمثل الحركة، تنشئها، تعدلها - كله animation. الخيارات A, C, D لا علاقة بالحركة.</p>
@@ -5593,7 +5601,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q159_3"><span class="letter">D</span>LCD, OLED, and CRT</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">السلايدات حددت <b>ثلاث تقنيات للـanimation</b>: <b>Keyframing (artist-directed)</b>، <b>Motion Capture (data-driven)</b>، <b>Simulation (physics-based)</b>. الخيارات A, B, D ليست تقنيات animation. اذكر: keyframing, mocap, simulation.</p>
@@ -5627,7 +5635,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q160_3"><span class="letter">D</span>Keyframing</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Artist-directed animation</b> = <b>keyframing</b>. الفنان يحدد المفاتيح (keyframes) في لحظات معينة، ويُستويى البرنامج ما بينها. الخيارات A (mocap)، B (shadow mapping)، C (depth buffering) ليست artist-directed animation.</p>
@@ -5661,7 +5669,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q161_3"><span class="letter">D</span>BVH splitting</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">المبدأ الأساسي في <b>keyframing</b>: <b>interpolation</b> (الاستواء). نضع قيم عند keyframes ونستوي ما بينها. الخيارات B (ray-box test)، C (backlight filtering)، D (BVH splitting) لا علاقة.</p>
@@ -5695,7 +5703,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q162_3"><span class="letter">D</span>Sampling a shadow map</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Tweening</b> = الاستواء بين الـkeyframes (in-betweening). كأنك ترسم الإطار 1 والإطار 10، والكمبيوتر يرسم 2-9. الخيارات A, C, D لا علاقة بـtweening.</p>
@@ -5729,7 +5737,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q163_3"><span class="letter">D</span>Replace all simulation</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Keyframing سهل في <b>الإنشاء والتعديل</b>. تضع keyframe، تعدلها بسهولة، تشوف النتيجة فوراً. أما الـmotion capture فيحتاج معدات وتسجيل. والـsimulation يحتاج نمذجة فيزيائية. اذكر: keyframing = أسهل في التحكم الفني.</p>
@@ -5763,7 +5771,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q164_3"><span class="letter">D</span>Data-driven animation from real-world sensors</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Motion capture</b> = animation <b>data-driven من حساسات العالم الحقيقي</b>. ممثل يلبس بدلة، الحساسات تسجل حركته، نطبقها على شخصية 3D. الخيارات A, B, C لا علاقة.</p>
@@ -5797,7 +5805,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q165_3"><span class="letter">D</span>No real-world performance needed</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">ميزة motion capture: <b>حركة معقدة واقعية</b>. صعب صنعها يدوياً، لكن المحاكاة بأداء حقيقي ينتج حركة طبيعية. الخيارات الأخرى ليست ميزات mocap.</p>
@@ -5831,7 +5839,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q166_3"><span class="letter">D</span>It only draws pixels</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">عيب motion capture: <b>صعوبة التعديل وحاجة لمراقبة حركة حقيقية</b>. بعد التسجيل، تعديل الحركة صعب (مو زي keyframing). والممثل لازم يؤدي الحركة فعلاً. الخيارات الأخرى لا تمثل العيوب.</p>
@@ -5865,7 +5873,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q167_3"><span class="letter">D</span>Building font maps</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Physics-based animation</b> ينتج الحركة بـ<b>محاكاة السلوك الفيزيائي</b>. نموذج رياضي للجاذبية والقوى والتصادمات، الحاسوب يحسب الحركة من المبادئ الأولى. الخيارات A, B, D لا علاقة.</p>
@@ -5899,7 +5907,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q168_3"><span class="letter">D</span>Efficiency and plausible visuals</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">محاكاة الفيزياء للرسوميات تركز على <b>الكفاءة والبصريات المعقولة</b>، أكثر من الدقة العلمية المثالية. هدفنا 'يبدو حقيقي' وليس 'دقيق علمياً'. الخيارات A (دقة مثالية فقط)، B (text)، C (database) لا تمثل أولويات المحاكاة البصرية.</p>
@@ -5933,7 +5941,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q169_3"><span class="letter">D</span>Only LCD filters</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Physics-based animation تستخدم <b>primitives أبسط</b> لتقريب الأجسام المعقدة. مثلاً قماش = شبكة كتل وزنبركات، سائل = جسيمات. الخيارات B, C, D لا منطق.</p>
@@ -5967,7 +5975,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q170_3"><span class="letter">D</span>Displays only</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">Animation تشمل حركة <b>الأجسام، الأضواء، الكاميرات، وتغيير الخصائص</b>. ليس فقط الأجسام تتحرك - الإضاءة تتغير، الكاميرا تتحرك، حتى المواد تتطور. الخيارات الأخرى ضيقة جداً.</p>
@@ -6001,7 +6009,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q171_3"><span class="letter">D</span>The number of internet users</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text">كفاءة الـanimation تعتمد بشكل أساسي على <b>سرعة rendering الإطارات</b>. لو الإطار بطيء، الـanimation بطيئة. لذلك نهتم بالـoptimization. الخيارات A (encryption)، B (text)، D (internet users) لا علاقة.</p>
@@ -6035,7 +6043,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q172_3"><span class="letter">D</span>Particles connected by elastic springs</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Mass-spring system</b> = جسيمات (mass particles) مربوطة بـ<b>زنبركات مرنة (springs)</b>. يحاكي القماش، الحبال، الأجسام الناعمة. صيغة Hooke: F = k(x - x0). الخيارات A, B, C لا منطق.</p>
@@ -6069,7 +6077,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q173_3"><span class="letter">D</span>LCD polarizers</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Particle systems</b> ممتازة لنمذجة <b>السوائل والدخان</b>. كل قطرة/جزيء = particle، التفاعل بين الجسيمات يعطي حركة طبيعية. شائع في visual effects. الخيارات B, C, D لا علاقة.</p>
@@ -6103,7 +6111,7 @@ footer { text-align:center; color:#64748b; padding:24px; }
               <label for="q174_3"><span class="letter">D</span>A color space</label>
             </div>
       </div>
-      <button class="explain-toggle" type="button" aria-expanded="false">▼ الشرح</button>
+      <button class="explain-toggle" type="button" aria-expanded="false" aria-label="إظهار الشرح"><span class="chev"></span></button>
       <div class="explanation">
         
         <p class="explain-text"><b>Forward Euler integration</b> = طريقة بسيطة لحساب الحركة من القوى. الصيغة: x(t+dt) = x(t) + dt·f(x,t). بسيط للتطبيق، لكن <b>غير دقيق مع خطوات زمنية كبيرة وقد يصير غير مستقر</b>. الخيار A عكس (ليس دائماً دقيق). والـC و D لا علاقة.</p>
